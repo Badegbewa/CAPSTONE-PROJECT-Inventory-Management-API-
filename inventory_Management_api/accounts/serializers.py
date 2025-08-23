@@ -1,5 +1,8 @@
 from rest_framework import serializers
+<<<<<<< HEAD
 from .models import User
+=======
+>>>>>>> 618fc8dde489b81878f88e55ee6a1552b94a7043
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 
