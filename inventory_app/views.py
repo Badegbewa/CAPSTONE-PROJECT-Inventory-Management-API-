@@ -1,11 +1,11 @@
 from rest_framework import viewsets, permissions, filters, generics, status
 from django_filters.rest_framework import DjangoFilterBackend
-from .models import Product, Category, Inventory, Order
+from .models import Product, Category, Inventory, Order, OrderItem
 from .serializers import (
     ProductSerializer, CategorySerializer,
     InventorySerializer, UserSerializer,
-    OrderSerializer, RegisterSerializer,
-    UpdateUserSerializer 
+    OrderSerializer, OrderItemSerializer, 
+    RegisterSerializer, UpdateUserSerializer, 
     )
 from django.contrib.auth.models import User
 from rest_framework.response import Response
@@ -50,6 +50,13 @@ class OrderViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+class OrderItemViewSet(viewsets.ModelViewSet):
+    serializer_class = OrderItemSerializer
+
+    def get_queryset(self):
+        order_id = self.kwargs.get('order_pk')
+        return OrderItem.objects.filter(order_id=order_id)
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()

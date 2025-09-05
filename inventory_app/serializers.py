@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Product, Category, Inventory, Order
+from .models import Product, Category, Inventory, Order, OrderItem
 from django.contrib.auth.models import User
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -23,6 +23,12 @@ class OrderSerializer(serializers.ModelSerializer):
         model = Order
         fields = '__all__'
         read_only_fields = ['user', 'ordered_at']
+
+class OrderItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderItem
+        fields = '__all__'
+
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)

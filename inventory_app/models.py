@@ -29,3 +29,8 @@ class Order(models.Model):
 
     def __str__(self):
         return f"{self.user.username} ordered {self.quantity} of {self.item.name}"
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=0)
