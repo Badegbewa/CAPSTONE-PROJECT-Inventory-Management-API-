@@ -88,7 +88,7 @@ DATABASES = {
         'USER': os.environ.get('DB_USER', 'inventory_user'),
         'PASSWORD': os.environ.get('DB_PASSWORD', '1759'),
         'HOST': os.environ.get('DB_HOST', 'localhost'),
-        'PORT': os.environ.get('DB_HOST', '5432'),
+        'PORT': os.environ.get('DB_PORT', '5432'),
     }
 }
 
@@ -155,3 +155,13 @@ SIMPLE_JWT = {
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+import sys
+
+if 'test' in sys.argv:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:',
+        }
+    }
