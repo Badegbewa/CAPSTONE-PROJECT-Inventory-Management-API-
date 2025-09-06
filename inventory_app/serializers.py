@@ -27,8 +27,12 @@ class OrderSerializer(serializers.ModelSerializer):
 class OrderItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderItem
-        fields = '__all__'
+        fields = ['id', 'product', 'quantity']
 
+    def create(self, validated_data):
+        order_id = self.context['view'].kwargs['order_pk']
+        order = Order.objects.get(pk=order_id)
+        return OrderItem.objects.create(order=order, **validated_data)
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)

@@ -1,5 +1,4 @@
 from django.urls import path, include
-from rest_framework.routers import DefaultRouter
 from rest_framework_nested import routers
 from .views import ( 
     ProductViewSet, CategoryViewSet,
@@ -10,7 +9,7 @@ from .views import (
 )
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
-router = DefaultRouter()
+router = routers.DefaultRouter()
 router.register (r'products', ProductViewSet)
 router.register (r'categories', CategoryViewSet)
 router.register (r'inventory', InventoryViewSet)
@@ -29,4 +28,6 @@ urlpatterns = [
     path('auth/delete/', DeleteAccountView.as_view(), name='delete-account'),
     path('auth/token/refresh/', TokenRefreshView.as_view(), name='token-refresh'),
 ]
-urlpatterns = router.urls + orders_router.urls
+
+
+urlpatterns += router.urls + orders_router.urls

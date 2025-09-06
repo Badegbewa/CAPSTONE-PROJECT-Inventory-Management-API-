@@ -23,14 +23,18 @@ class Inventory(models.Model):
 
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    quantity = models.IntegerField(default=0)
+    status = models.CharField(max_length=20, default='pending')
     ordered_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user.username} ordered {self.quantity} of {self.item.name}"
+        return f"Order by {self.user.username} on {self.ordered_at.strftime('%Y-%m-%d')}"
+
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.quantity}x {self.product.name} in Order #{self.order.id}"
+

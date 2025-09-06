@@ -14,7 +14,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 
 class ProductViewSet(viewsets.ModelViewSet):
-    queryset = Product.objects.all()
+    queryset = Product.objects.all().order_by ('id')
     serializer_class = ProductSerializer
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
@@ -53,10 +53,16 @@ class OrderViewSet(viewsets.ModelViewSet):
 
 class OrderItemViewSet(viewsets.ModelViewSet):
     serializer_class = OrderItemSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         order_id = self.kwargs.get('order_pk')
         return OrderItem.objects.filter(order_id=order_id)
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['order_pk'] = self.kwargs.get('order_pk')
+        return context
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
